@@ -32,6 +32,7 @@ const checkIsAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         if (!user.isAdmin) {
             return res.status(403).json({ message: error_responses_1.NOT_ADMIN });
         }
+        req.userId = id.toString();
     }
     catch (e) {
         return res.status(401).json({ message: error_responses_1.UNAUTHORIZED_USER_MESSAGE });

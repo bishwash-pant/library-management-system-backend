@@ -15,7 +15,9 @@ const user_model_1 = require("../../models/user-model");
 function deleteUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
-        console.log({ id });
+        if (id === req.userId) {
+            return res.status(403).json({ message: "Can not delete youself" });
+        }
         try {
             const user = yield user_model_1.User.findById(id);
             if (user) {

@@ -6,6 +6,8 @@ import {
 } from "../../../common/interfaces/request-objects";
 import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
+import { createUserNotification } from "../../notification/notification-controller";
+import { text } from "body-parser";
 
 export async function getAllBooks(req: RequestI, res: ResponseI) {
   try {
@@ -94,6 +96,9 @@ export async function approveRequest(req: RequestI, res: ResponseI) {
       assignedTo: book.requestedBy,
       assignedAt: Date.now(),
     });
+    const notificationText = ` Your request for Book titled "${book.title}" has been approved`;
+
+    createUserNotification(notificationText, book.requestedBy.toString());
     return res.status(200).json({ message: "Approved Successfull" });
   } catch (e) {
     res.status(500).json({ message: INTERNAL_SERVER_ERROR });

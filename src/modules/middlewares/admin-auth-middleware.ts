@@ -22,11 +22,13 @@ export const checkIsAdmin = async (
   try {
     const id = jwt.verify(token[1], process.env.SECRET_KEY);
     const user = await User.findOne({ _id: id });
+
     if (!user)
       return res.status(401).json({ message: UNAUTHORIZED_USER_MESSAGE });
     if (!user.isAdmin) {
       return res.status(403).json({ message: NOT_ADMIN });
     }
+    req.userId = id.toString();
   } catch (e) {
     return res.status(401).json({ message: UNAUTHORIZED_USER_MESSAGE });
   }
