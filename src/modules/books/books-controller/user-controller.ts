@@ -7,10 +7,7 @@ import { getAdmin } from "../../../utils/getAdmin";
 import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
 import { User } from "../../models/user-model";
-import {
-  createAdminNotification,
-  createUserNotification,
-} from "../../notification/notification-utils";
+import { createAdminNotification } from "../../notification/notification-utils";
 export async function requestBook(req: RequestI, res: ResponseI) {
   try {
     const id = req.params.id;
@@ -89,7 +86,9 @@ export async function returnBook(req: RequestI, res: ResponseI) {
         assignedTo: null,
         requestedAt: null,
       });
-
+      const user = await User.findById(req.userId);
+      const text = `Request for book titled ${book.title} was returned by ${user.fullName}`;
+      createAdminNotification(text);
       return res.json({ message: "Book returned successfully" });
     }
     return res.status(404).json({ message: "Book not found" });

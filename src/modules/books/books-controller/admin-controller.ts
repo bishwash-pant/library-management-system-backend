@@ -8,6 +8,7 @@ import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
 import { createUserNotification } from "../../notification/notification-utils";
 import { text } from "body-parser";
+import { User } from "../../models/user-model";
 
 export async function getAllBooks(req: RequestI, res: ResponseI) {
   try {
@@ -96,6 +97,7 @@ export async function approveRequest(req: RequestI, res: ResponseI) {
       assignedTo: book.requestedBy,
       assignedAt: Date.now(),
     });
+
     const notificationText = ` Your request for Book titled "${book.title}" has been approved`;
 
     createUserNotification(notificationText, book.requestedBy.toString());
@@ -116,7 +118,9 @@ export async function rejectRequest(req: RequestI, res: ResponseI) {
       requestedBy: null,
       requestedAt: null,
     });
-    return res.json({ message: "Request cancelled successfully" });
+    const notificationText = ` Your request for Book titled "${book.title}" has been declined`;
+    createUserNotification(notificationText, book.requestedBy.toString());
+    return res.json({ message: "Request request declined successfully" });
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
   }
@@ -130,6 +134,8 @@ export async function unAssignBook(req: RequestI, res: ResponseI) {
       assignedTo: null,
       assignedAt: null,
     });
+    const notificationText = ` Your Book titled "${book.title}" has been deallocated`;
+    createUserNotification(notificationText, book.requestedBy.toString());
     return res.json({ message: "Book unassigned successfully" });
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });

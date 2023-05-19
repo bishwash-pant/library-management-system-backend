@@ -107,6 +107,9 @@ function returnBook(req, res) {
                     assignedTo: null,
                     requestedAt: null,
                 });
+                const user = yield user_model_1.User.findById(req.userId);
+                const text = `Request for book titled ${book.title} was returned by ${user.fullName}`;
+                (0, notification_utils_1.createAdminNotification)(text);
                 return res.json({ message: "Book returned successfully" });
             }
             return res.status(404).json({ message: "Book not found" });

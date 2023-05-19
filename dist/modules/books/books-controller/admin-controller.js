@@ -154,7 +154,9 @@ function rejectRequest(req, res) {
                 requestedBy: null,
                 requestedAt: null,
             });
-            return res.json({ message: "Request cancelled successfully" });
+            const notificationText = ` Your request for Book titled "${book.title}" has been declined`;
+            (0, notification_utils_1.createUserNotification)(notificationText, book.requestedBy.toString());
+            return res.json({ message: "Request request declined successfully" });
         }
         catch (e) {
             return res.status(500).json({ message: error_responses_1.INTERNAL_SERVER_ERROR });
@@ -173,6 +175,8 @@ function unAssignBook(req, res) {
                 assignedTo: null,
                 assignedAt: null,
             });
+            const notificationText = ` Your Book titled "${book.title}" has been deallocated`;
+            (0, notification_utils_1.createUserNotification)(notificationText, book.requestedBy.toString());
             return res.json({ message: "Book unassigned successfully" });
         }
         catch (e) {
