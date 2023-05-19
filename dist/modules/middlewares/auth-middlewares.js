@@ -17,7 +17,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = require("../models/user-model");
 const error_responses_1 = require("../../common/constants/error-responses");
 const fetchUserFromRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("middleware: fetchUserFromRequest");
     const authToken = req.headers["authorization"];
     if (!authToken)
         return res.status(401).json({ message: error_responses_1.UNAUTHORIZED_USER_MESSAGE });
@@ -25,12 +24,8 @@ const fetchUserFromRequest = (req, res, next) => __awaiter(void 0, void 0, void 
     if (token.length !== 2 || token[0] !== "Bearer")
         return res.status(401).json({ message: error_responses_1.UNAUTHORIZED_USER_MESSAGE });
     try {
-        console.log("token", token[1]);
         const userId = jsonwebtoken_1.default.verify(token[1], process.env.SECRET_KEY);
-        // const id = userId["id"];
-        console.log(userId);
         const user = yield user_model_1.User.findById(userId);
-        console.log({ user });
         if (!user)
             return res.status(401).json({ message: error_responses_1.UNAUTHORIZED_USER_MESSAGE });
         req.userId = userId.toString();

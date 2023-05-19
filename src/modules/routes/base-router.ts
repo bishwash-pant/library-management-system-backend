@@ -5,11 +5,13 @@ import { fetchUserFromRequest } from "../middlewares/auth-middlewares";
 import { adminRouter } from "./admin-routes";
 import { checkIsAdmin } from "../middlewares/admin-auth-middleware";
 import { bookRouter } from "./books-routes";
+import { notificationRouter } from "./notification-routes";
 export const baseRouter = Router();
 baseRouter.use("/auth", authRouter);
 baseRouter.use("/users", fetchUserFromRequest, userRouter);
 baseRouter.use("/admin", checkIsAdmin, adminRouter);
 baseRouter.use("/books", bookRouter);
+baseRouter.use("/notifications", notificationRouter);
 baseRouter.use((req, res) => {
   console.log(req.path);
 

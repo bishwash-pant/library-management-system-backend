@@ -3,11 +3,18 @@ import {
   RequestI,
   ResponseI,
 } from "../../../common/interfaces/request-objects";
+import { getAdmin } from "../../../utils/getAdmin";
 import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
+import { User } from "../../models/user-model";
+import {
+  createAdminNotification,
+  createUserNotification,
+} from "../../notification/notification-utils";
 export async function requestBook(req: RequestI, res: ResponseI) {
   try {
     const id = req.params.id;
+    const user = await User.findById(req.userId);
     const book = await Book.findById(id);
     if (book) {
       if (book.requestedBy)
@@ -24,6 +31,8 @@ export async function requestBook(req: RequestI, res: ResponseI) {
         requestedBy: req.userId,
         requestedAt: Date.now(),
       });
+      const text = `Request for book titled ${book.title} was made by ${user.fullName}`;
+      createAdminNotification(text);
       return res.json({ message: "Book requested successfully" });
     }
     return res.status(404).json({ message: "Book not found" });
@@ -54,12 +63,15 @@ export async function cancelRequest(req: RequestI, res: ResponseI) {
   try {
     const userId = req.userId;
     const bookId = req.params.id;
+    const user = await User.findById(userId);
     const book = await Book.findOne({ _id: bookId, requestedBy: userId });
     if (!book) return res.status(404).json({ message: "Request not found" });
     await Book.findByIdAndUpdate(bookId, {
       requestedBy: null,
       requestedAt: null,
     });
+    const text = `Request for book titled ${book.title} was canceled by ${user.fullName}`;
+    createAdminNotification(text);
     return res.json({ message: "Request cancelled successfully" });
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
@@ -77,6 +89,7 @@ export async function returnBook(req: RequestI, res: ResponseI) {
         assignedTo: null,
         requestedAt: null,
       });
+
       return res.json({ message: "Book returned successfully" });
     }
     return res.status(404).json({ message: "Book not found" });

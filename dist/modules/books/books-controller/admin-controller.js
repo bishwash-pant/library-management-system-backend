@@ -13,7 +13,7 @@ exports.unAssignBook = exports.rejectRequest = exports.approveRequest = exports.
 const error_responses_1 = require("../../../common/constants/error-responses");
 const paginate_1 = require("../../../utils/paginate");
 const books_models_1 = require("../../models/books-models");
-const notification_controller_1 = require("../../notification/notification-controller");
+const notification_utils_1 = require("../../notification/notification-utils");
 function getAllBooks(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -131,7 +131,7 @@ function approveRequest(req, res) {
                 assignedAt: Date.now(),
             });
             const notificationText = ` Your request for Book titled "${book.title}" has been approved`;
-            (0, notification_controller_1.createUserNotification)(notificationText, book.requestedBy.toString());
+            (0, notification_utils_1.createUserNotification)(notificationText, book.requestedBy.toString());
             return res.status(200).json({ message: "Approved Successfull" });
         }
         catch (e) {

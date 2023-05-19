@@ -6,7 +6,7 @@ import {
 } from "../../../common/interfaces/request-objects";
 import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
-import { createUserNotification } from "../../notification/notification-controller";
+import { createUserNotification } from "../../notification/notification-utils";
 import { text } from "body-parser";
 
 export async function getAllBooks(req: RequestI, res: ResponseI) {
