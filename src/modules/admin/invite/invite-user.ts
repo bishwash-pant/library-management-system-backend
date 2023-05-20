@@ -7,6 +7,7 @@ import { InvitedUser } from "../../models/request-token";
 import jwt from "jsonwebtoken";
 import { paginator } from "../../../utils/paginate";
 import { User } from "../../models/user-model";
+import { sendMail } from "../../mail-services/mail";
 
 export async function inviteUser(req: RequestI, res: ResponseI) {
   const email = req.body.email;
@@ -21,6 +22,8 @@ export async function inviteUser(req: RequestI, res: ResponseI) {
     const token = jwt.sign(payload, process.env.SECRET_KEY);
     const newInvitedUser = new InvitedUser({ email: email, token: token });
     await newInvitedUser.save();
+    const html = `<h1 style='width:fit-content; margin: 0 auto;'>Library Management System</h1><p>Copy the following link and signup</p> localhost:3000/signup/${token}<p></p>`;
+    sendMail(email, html);
     return res.status(200).json({ message: "New User Invited Successfully" });
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });

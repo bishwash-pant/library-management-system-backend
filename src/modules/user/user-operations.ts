@@ -50,13 +50,7 @@ export async function signUp(req: express.Request, res: express.Response) {
 
   try {
     const payload = jwt.verify(receivedToken, process.env.SECRET_KEY);
-    console.log({ payload });
-
     const invitedUser = await InvitedUser.findOne({ email: payload["email"] });
-    console.log({ payload });
-
-    console.log("invited user", invitedUser);
-
     if (!invitedUser) {
       return res.status(401).json({ message: "Invalid token" });
     }

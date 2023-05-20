@@ -16,7 +16,7 @@ exports.sendMail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 require("dotenv").config();
 const env = process.env;
-const sendMail = () => __awaiter(void 0, void 0, void 0, function* () {
+const sendMail = (email, html) => __awaiter(void 0, void 0, void 0, function* () {
     var transport = nodemailer_1.default.createTransport({
         //@ts-ignore
         host: env.MAIL_HOST,
@@ -29,11 +29,11 @@ const sendMail = () => __awaiter(void 0, void 0, void 0, function* () {
     // send mail with defined transport object
     try {
         yield transport.sendMail({
-            from: '"Fred Foo 👻" <foo@example.com>',
-            to: "bar@example.com, baz@example.com",
-            subject: "Hello ✔",
-            text: "Hello world?",
-            html: ' <a href="www.google.com">Click here</a>', // html body
+            from: '"lms 👻" <lms@example.com>',
+            to: `${email}`,
+            subject: "User Invitation",
+            text: "Sign up to Library?",
+            html: html, // html body
         });
     }
     catch (e) {

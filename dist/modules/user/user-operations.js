@@ -59,10 +59,7 @@ function signUp(req, res) {
         console.log({ receivedToken });
         try {
             const payload = jsonwebtoken_1.default.verify(receivedToken, process.env.SECRET_KEY);
-            console.log({ payload });
             const invitedUser = yield request_token_1.InvitedUser.findOne({ email: payload["email"] });
-            console.log({ payload });
-            console.log("invited user", invitedUser);
             if (!invitedUser) {
                 return res.status(401).json({ message: "Invalid token" });
             }

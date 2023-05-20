@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 require("dotenv").config();
 const env = process.env;
-export const sendMail = async () => {
+export const sendMail = async (email, html) => {
   var transport = nodemailer.createTransport({
     //@ts-ignore
     host: env.MAIL_HOST,
@@ -14,11 +14,11 @@ export const sendMail = async () => {
   // send mail with defined transport object
   try {
     await transport.sendMail({
-      from: '"Fred Foo 👻" <foo@example.com>', // sender address
-      to: "bar@example.com, baz@example.com", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-      html: ' <a href="www.google.com">Click here</a>', // html body
+      from: '"lms 👻" <lms@example.com>', // sender address
+      to: `${email}`, // list of receivers
+      subject: "User Invitation", // Subject line
+      text: "Sign up to Library?", // plain text body
+      html: html, // html body
     });
   } catch (e) {
     console.log(e);

@@ -7,8 +7,6 @@ import {
 import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
 import { createUserNotification } from "../../notification/notification-utils";
-import { text } from "body-parser";
-import { User } from "../../models/user-model";
 
 export async function getAllBooks(req: RequestI, res: ResponseI) {
   try {

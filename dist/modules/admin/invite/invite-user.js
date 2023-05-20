@@ -18,6 +18,7 @@ const request_token_1 = require("../../models/request-token");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const paginate_1 = require("../../../utils/paginate");
 const user_model_1 = require("../../models/user-model");
+const mail_1 = require("../../mail-services/mail");
 function inviteUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const email = req.body.email;
@@ -32,6 +33,8 @@ function inviteUser(req, res) {
             const token = jsonwebtoken_1.default.sign(payload, process.env.SECRET_KEY);
             const newInvitedUser = new request_token_1.InvitedUser({ email: email, token: token });
             yield newInvitedUser.save();
+            const html = `<h1 style='width:fit-content; margin: 0 auto;'>Library Management System</h1><p>Copy the following link and signup</p> localhost:3000/signup/${token}<p></p>`;
+            (0, mail_1.sendMail)(email, html);
             return res.status(200).json({ message: "New User Invited Successfully" });
         }
         catch (e) {

@@ -3,7 +3,6 @@ import {
   RequestI,
   ResponseI,
 } from "../../../common/interfaces/request-objects";
-import { getAdmin } from "../../../utils/getAdmin";
 import { paginator } from "../../../utils/paginate";
 import { Book } from "../../models/books-models";
 import { User } from "../../models/user-model";
