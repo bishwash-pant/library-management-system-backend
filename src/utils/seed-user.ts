@@ -1,6 +1,6 @@
 import bcrytp from "bcrypt";
 import { User } from "../modules/models/user-model";
-import { createUser } from "../modules/user/user-operations";
+import { createUser } from "../modules/user/user-controller";
 import { UserInfoI } from "../common/interfaces/user-info";
 import { hashString } from "./hashString";
 

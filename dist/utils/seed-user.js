@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedSuperAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_model_1 = require("../modules/models/user-model");
-const user_operations_1 = require("../modules/user/user-operations");
+const user_controller_1 = require("../modules/user/user-controller");
 const hashString_1 = require("./hashString");
 const seedSuperAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
     const ADMIN_FULLNAME = "Super Admin";
@@ -36,7 +36,7 @@ const seedSuperAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
         }
         const salt = bcrypt_1.default.genSaltSync(10);
         const hashedPassword = (0, hashString_1.hashString)(newAdmin.password, salt);
-        const superAdmin = (0, user_operations_1.createUser)(Object.assign(Object.assign({}, newAdmin), { salt: salt, password: hashedPassword }));
+        const superAdmin = (0, user_controller_1.createUser)(Object.assign(Object.assign({}, newAdmin), { salt: salt, password: hashedPassword }));
         console.log("Seeding Super User");
     }
     catch (e) {

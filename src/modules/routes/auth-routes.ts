@@ -1,10 +1,12 @@
 import { Router } from "express";
 import {
   changePassword,
+  forgotPassword,
   logIn,
   myProfile,
+  resetPassword,
   signUp,
-} from "../user/user-operations";
+} from "../user/user-controller";
 import { fetchUserFromRequest } from "../middlewares/auth-middlewares";
 import {
   signUpValidationErrorHandling,
@@ -28,4 +30,6 @@ authRouter.post(
   logIn
 );
 authRouter.patch("/change-password", fetchUserFromRequest, changePassword);
+authRouter.post("/forgot-password", forgotPassword);
+authRouter.post("/reset-password/:token", resetPassword);
 authRouter.get("/my-profile", fetchUserFromRequest, myProfile);

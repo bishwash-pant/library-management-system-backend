@@ -13,6 +13,8 @@ import {
 } from "../../common/constants/error-responses";
 import { RequestI, ResponseI } from "../../common/interfaces/request-objects";
 import { InvitedUser } from "../models/request-token";
+import { PasswordToken } from "../models/password-token";
+import { sendMail } from "../mail-services/mail";
 
 export async function createUser(attributes) {
   const { email, password, fullName } = attributes;
@@ -102,5 +104,56 @@ export async function myProfile(req: RequestI, res: ResponseI) {
     return res.status(200).json(userProfile);
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
+  }
+}
+export async function forgotPassword(req: RequestI, res: ResponseI) {
+  const email = req.body.email;
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    const passToken = await PasswordToken.findOne({ email: email });
+    if (passToken) await PasswordToken.findByIdAndDelete(passToken._id);
+    const payload = { email: email };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY);
+    console.log("token", token);
+
+    const newPassToken = new PasswordToken({ email: email, token: token });
+    await newPassToken.save();
+    const html = `<h1 style='width:fit-content; margin: 0 auto;'>Library Management System</h1><p>Copy the following link to reset your password</p> localhost:3000/reset-password/${token}<p></p>`;
+    sendMail(email, html);
+    return res.status(200).json({ message: "Email sent Successfully" });
+  } catch (e) {
+    return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
+  }
+}
+export async function resetPassword(
+  req: express.Request,
+  res: express.Response
+) {
+  const receivedToken = req.params.token;
+
+  try {
+    const payload = jwt.verify(receivedToken, process.env.SECRET_KEY);
+    const passToken = await PasswordToken.findOne({ email: payload["email"] });
+    if (!passToken) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    const email = passToken.email;
+    const salt: string = bcrypt.genSaltSync(10);
+    const hashedPassword: string = await hashString(req.body.password, salt);
+    const user = await User.findOneAndUpdate(
+      {
+        email: email,
+      },
+      { password: hashedPassword, salt }
+    );
+
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+    await PasswordToken.findOneAndDelete({ email: email });
+
+    return res.status(200).json({ message: "Password reset successfully" });
+  } catch (err) {
+    res.status(500).json({ message: INTERNAL_SERVER_ERROR });
   }
 }
