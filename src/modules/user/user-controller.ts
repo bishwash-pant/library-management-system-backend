@@ -122,7 +122,12 @@ export async function forgotPassword(req: RequestI, res: ResponseI) {
     await newPassToken.save();
     const html = `<h1 style='width:fit-content; margin: 0 auto;'>Library Management System</h1><p>Copy the following link to reset your password</p> localhost:3000/reset-password/${token}<p></p>`;
     sendMail(email, html);
-    return res.status(200).json({ message: "Email sent Successfully" });
+    return res
+      .status(200)
+      .json({
+        message:
+          "A link to reset your password has been sent. Please check your email",
+      });
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
   }
