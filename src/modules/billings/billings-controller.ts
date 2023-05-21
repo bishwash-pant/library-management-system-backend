@@ -3,9 +3,9 @@ import { RequestI, ResponseI } from "../../common/interfaces/request-objects";
 import { Book } from "../models/books-models";
 import { User } from "../models/user-model";
 import { INTERNAL_SERVER_ERROR } from "../../common/constants/error-responses";
+const costPerDay = 2;
 
 export async function getAllUsersBilling(req: RequestI, response: ResponseI) {
-  const costPerDay = 2;
   try {
     const users = await User.find({ isAdmin: false }, { password: 0, salt: 0 });
 
@@ -21,7 +21,7 @@ export async function getAllUsersBilling(req: RequestI, response: ResponseI) {
 
         const daysPassed = today.diff(assignedAt, "days");
 
-        billCost += 0.1 * (daysPassed + 1);
+        billCost += costPerDay * (daysPassed + 1);
       }
       billingList.push({
         fullName: users[i].fullName,
@@ -47,7 +47,7 @@ export async function getAssignedBooksBillings(req: RequestI, res: ResponseI) {
 
       const daysPassed = today.diff(assignedAt, "days");
 
-      const billCost = 0.1 * (daysPassed + 1);
+      const billCost = costPerDay * (daysPassed + 1);
       billingList.push({
         title: books[i].title,
         _id: books[i]._id,
