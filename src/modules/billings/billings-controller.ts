@@ -5,7 +5,7 @@ import { User } from "../models/user-model";
 import { INTERNAL_SERVER_ERROR } from "../../common/constants/error-responses";
 
 export async function getAllUsersBilling(req: RequestI, response: ResponseI) {
-  const costPerDay = 0.1;
+  const costPerDay = 2;
   try {
     const users = await User.find({ isAdmin: false }, { password: 0, salt: 0 });
 
@@ -35,7 +35,7 @@ export async function getAllUsersBilling(req: RequestI, response: ResponseI) {
   }
 }
 export async function getAssignedBooksBillings(req: RequestI, res: ResponseI) {
-  const costPerDay = 0.1;
+  const costPerDay = 2;
   try {
     const books = await Book.find({ assignedTo: req.userId });
 

@@ -19,7 +19,7 @@ const user_model_1 = require("../models/user-model");
 const error_responses_1 = require("../../common/constants/error-responses");
 function getAllUsersBilling(req, response) {
     return __awaiter(this, void 0, void 0, function* () {
-        const costPerDay = 0.1;
+        const costPerDay = 2;
         try {
             const users = yield user_model_1.User.find({ isAdmin: false }, { password: 0, salt: 0 });
             let billingList = [];
@@ -48,7 +48,7 @@ function getAllUsersBilling(req, response) {
 exports.getAllUsersBilling = getAllUsersBilling;
 function getAssignedBooksBillings(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const costPerDay = 0.1;
+        const costPerDay = 2;
         try {
             const books = yield books_models_1.Book.find({ assignedTo: req.userId });
             let billingList = [];
