@@ -21,7 +21,7 @@ function getAllUsersBilling(req, response) {
     return __awaiter(this, void 0, void 0, function* () {
         const costPerDay = 0.1;
         try {
-            const users = yield user_model_1.User.find({}, { password: 0, salt: 0 });
+            const users = yield user_model_1.User.find({ isAdmin: false }, { password: 0, salt: 0 });
             let billingList = [];
             for (let i = 0; i < users.length; i++) {
                 const books = yield books_models_1.Book.find({ assignedTo: users[i]._id });

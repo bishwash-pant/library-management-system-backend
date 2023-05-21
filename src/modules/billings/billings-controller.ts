@@ -7,7 +7,7 @@ import { INTERNAL_SERVER_ERROR } from "../../common/constants/error-responses";
 export async function getAllUsersBilling(req: RequestI, response: ResponseI) {
   const costPerDay = 0.1;
   try {
-    const users = await User.find({}, { password: 0, salt: 0 });
+    const users = await User.find({ isAdmin: false }, { password: 0, salt: 0 });
 
     let billingList = [];
     for (let i = 0; i < users.length; i++) {
