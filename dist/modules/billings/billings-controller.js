@@ -27,10 +27,10 @@ function getAllUsersBilling(req, response) {
                 const books = yield books_models_1.Book.find({ assignedTo: users[i]._id });
                 let billCost = 0;
                 for (let j = 0; j < books.length; j++) {
-                    const createdAt = books[j].createdAt;
+                    const assignedAt = books[j].assignedAt;
                     const today = (0, moment_1.default)();
-                    const daysPassed = today.diff(createdAt, "days");
-                    billCost += 0.1 * daysPassed;
+                    const daysPassed = today.diff(assignedAt, "days");
+                    billCost += 0.1 * (daysPassed + 1);
                 }
                 billingList.push({
                     fullName: users[i].fullName,
@@ -53,10 +53,10 @@ function getAssignedBooksBillings(req, res) {
             const books = yield books_models_1.Book.find({ assignedTo: req.userId });
             let billingList = [];
             for (let i = 0; i < books.length; i++) {
-                const createdAt = books[i].createdAt;
+                const assignedAt = books[i].assignedAt;
                 const today = (0, moment_1.default)();
-                const daysPassed = today.diff(createdAt, "days");
-                const billCost = 0.1 * daysPassed;
+                const daysPassed = today.diff(assignedAt, "days");
+                const billCost = 0.1 * (daysPassed + 1);
                 billingList.push({
                     title: books[i].title,
                     _id: books[i]._id,
