@@ -26,7 +26,7 @@ bookRouter.post("/", checkIsAdmin, addBooks);
 bookRouter.delete("/return/:id", fetchUserFromRequest, returnBook);
 bookRouter.get("/details/:id", checkIsAdmin, getBookDetails);
 bookRouter.get("/details-basic/:id", fetchUserFromRequest, getBookDetails);
-bookRouter.get("/assigned", checkIsAdmin, getAllAssignedBooks);
+bookRouter.get("/assigned", fetchUserFromRequest, getAllAssignedBooks);
 bookRouter.patch("/update/:id", checkIsAdmin, updateBook);
 bookRouter.delete("/delete/:id", checkIsAdmin, deleteBook);
 bookRouter.get("/requests", checkIsAdmin, getAllRequests);

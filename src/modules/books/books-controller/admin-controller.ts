@@ -69,7 +69,7 @@ export async function deleteBook(req: RequestI, res: ResponseI) {
 export async function getAllAssignedBooks(req: RequestI, res: ResponseI) {
   try {
     const allAssignedBooks = await Book.find({ assignedTo: { $ne: null } });
-    return res.json(allAssignedBooks);
+    paginator(allAssignedBooks, req, res);
   } catch (e) {
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
   }

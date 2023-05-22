@@ -95,7 +95,7 @@ function getAllAssignedBooks(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const allAssignedBooks = yield books_models_1.Book.find({ assignedTo: { $ne: null } });
-            return res.json(allAssignedBooks);
+            (0, paginate_1.paginator)(allAssignedBooks, req, res);
         }
         catch (e) {
             return res.status(500).json({ message: error_responses_1.INTERNAL_SERVER_ERROR });

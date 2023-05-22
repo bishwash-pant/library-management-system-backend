@@ -11,7 +11,7 @@ exports.bookRouter.post("/", admin_auth_middleware_1.checkIsAdmin, admin_control
 exports.bookRouter.delete("/return/:id", auth_middlewares_1.fetchUserFromRequest, user_controller_1.returnBook);
 exports.bookRouter.get("/details/:id", admin_auth_middleware_1.checkIsAdmin, admin_controller_1.getBookDetails);
 exports.bookRouter.get("/details-basic/:id", auth_middlewares_1.fetchUserFromRequest, admin_controller_1.getBookDetails);
-exports.bookRouter.get("/assigned", admin_auth_middleware_1.checkIsAdmin, admin_controller_1.getAllAssignedBooks);
+exports.bookRouter.get("/assigned", auth_middlewares_1.fetchUserFromRequest, admin_controller_1.getAllAssignedBooks);
 exports.bookRouter.patch("/update/:id", admin_auth_middleware_1.checkIsAdmin, admin_controller_1.updateBook);
 exports.bookRouter.delete("/delete/:id", admin_auth_middleware_1.checkIsAdmin, admin_controller_1.deleteBook);
 exports.bookRouter.get("/requests", admin_auth_middleware_1.checkIsAdmin, admin_controller_1.getAllRequests);
